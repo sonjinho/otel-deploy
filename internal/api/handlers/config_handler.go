@@ -23,3 +23,13 @@ func (h *ConfigHandler) GetConfig(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"key": key, "value": value})
 }
+
+func (h *ConfigHandler) SaveConfig(c *fiber.Ctx) error {
+	key := c.Params("key")
+	value := c.Params("value")
+	err := h.Service.SaveConfig(key, value)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to save config"})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"key": key, "value": value})
+}
